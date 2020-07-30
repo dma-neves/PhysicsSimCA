@@ -1,7 +1,7 @@
 INC_DIRECOTRY=-I src -I src/sim
 LIBS=-lcsfml-graphics -lcsfml-window -lcsfml-system
 
-CC=gcc -std=c11
+CC=gcc -std=c11 -g
 
 OBJECT_FILES=obj/main.o obj/PhysicsSim.o
 
