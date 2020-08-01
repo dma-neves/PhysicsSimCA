@@ -1,12 +1,8 @@
 #ifndef PARTICLE_SIMULATOR
 #define PARTICLE_SIMULATOR
 
-typedef enum _ParticleType { EMPTY = 0, SOLID, SAND, WATER } ParticleType;
-
-typedef struct _Particle
-{
-    ParticleType type;
-} Particle;
+#include "Particle.h"
+#include "ParticleRenderer.h"
 
 void ps_init(int w_width, int w_height);
 void ps_terminate();

@@ -28,6 +28,7 @@ void pr_terminate()
     free(pixels);
 }
 
+
 static void setPixel(int x, int y, int r, int b, int g, int a)
 {
     pixels[ (x + y * width) * 4] = r;
@@ -36,34 +37,27 @@ static void setPixel(int x, int y, int r, int b, int g, int a)
     pixels[ (x + y * width) * 4 + 3] = a;
 }
 
-static void updatePixels()
+void updatePixel(int x, int y, ParticleType type)
 {
-    for(int y = 0; y < height; y++)
+    switch(type)
     {
-        for(int x = 0; x < width; x++)
-        {
-            switch(getParticle(x, y)->type)
-            {
-                case EMPTY:
-                    setPixel(x, y, 0, 255, 0, 255);
-                    break;
+        case EMPTY:
+            setPixel(x, y, 0, 255, 0, 255);
+            break;
 
-                case SOLID:
-                    break;
+        case SOLID:
+            break;
 
-                case SAND:
-                    break;
+        case SAND:
+            break;
 
-                case WATER:
-                    break;
-            }
-        }
+        case WATER:
+            break;
     }
 }
 
 void pr_render(sfRenderWindow* window)
 {
-    updatePixels();
     sfImage* image = sfImage_createFromPixels(width, height, pixels);
     sfTexture* texture = sfTexture_createFromImage(image, &area);
     sfSprite_setTexture(sprite, texture, false);

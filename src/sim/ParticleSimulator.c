@@ -5,6 +5,12 @@ Particle* particles;
 List activeParticles;
 int width_test, height_test;
 
+static void setParticleType(int x, int y, ParticleType type)
+{
+    getParticle(x,y)->type = type;
+    updatePixel(x, y, type);
+}
+
 void ps_init(int w_width, int w_height)
 {
     width_test = w_width;
@@ -14,7 +20,7 @@ void ps_init(int w_width, int w_height)
     for(int y = 0; y < height_test; y++)
     {
         for(int x = 0; x < width_test; x++)
-            getParticle(x, y)->type = EMPTY;
+            setParticleType(x,y,EMPTY);
     }
 
     initList(&activeParticles, sizeof(Particle));
