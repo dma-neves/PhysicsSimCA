@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define UPDATE_PERIOD 0.08
+#define DT_MULTIPLIER 0.05
 
 sfRenderWindow* window;
 sfVideoMode mode;
@@ -58,7 +58,8 @@ static void handleEvents()
         else if(over(sandB, pos.x, pos.y)) tool = SAND;
         else if(over(waterB, pos.x, pos.y)) tool = WATER;
         else if(over(emptyB, pos.x, pos.y)) tool = EMPTY;
-        else if(getParticle(pos.x, pos.y)->type != tool) setParticleType(pos.x, pos.y, tool);
+        else if(tool == EMPTY) removeParticle(pos.x, pos.y);
+        else if(*getParticleType(pos.x, pos.y) == EMPTY) addParticle(pos.x, pos.y, tool);
     }
 }
 
@@ -67,7 +68,7 @@ static void update(float dt)
     ps_update(dt);
 }
 
-static void render()
+static void render() 
 {
     sfRenderWindow_clear(window, sfBlack);
 
@@ -100,14 +101,15 @@ void run()
     {
         handleEvents();
 
-        float dt = sfTime_asSeconds( sfClock_getElapsedTime(clock) );
-        if(dt >= UPDATE_PERIOD)
+        float dt = sfTime_asSeconds( sfClock_getElapsedTime(clock) ) * DT_MULTIPLIER;
+
+        for(int i = 0; i <= dt; i++)
         {
-            sfClock_restart(clock);
-            
-            update(dt);
-            render();
+            float pdt = i != (int)dt ? 1 : dt - i;
+            update(pdt);
         }
+
+        render();
     }
 
     terminate();

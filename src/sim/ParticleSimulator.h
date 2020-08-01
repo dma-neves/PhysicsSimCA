@@ -8,8 +8,9 @@ void ps_init(int w_width, int w_height);
 void ps_terminate();
 void ps_update(float dt);
 
-Particle* getParticles();
-Particle* getParticle(int x, int y);
-void setParticleType(int x, int y, ParticleType type);
+ParticleType* getParticleType(int x, int y);
+
+void addParticle(int x, int y, ParticleType type);
+void removeParticle(int x, int y);
 
 #endif
