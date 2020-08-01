@@ -4,22 +4,22 @@
 #include <stdlib.h>
 
 sfUint8* pixels;
-int width, height;
+int pr_width, pr_height;
 
 sfSprite* sprite;
 sfIntRect area;
 
 void pr_init(int w_width, int w_height)
 {
-    width = w_width;
-    height = w_height;
+    pr_width = w_width;
+    pr_height = w_height;
 
-    pixels = malloc(width*height*4);
+    pixels = malloc(pr_width*pr_height*4);
 
     area.left = 0;
     area.top = 0;
-    area.width = width;
-    area.height = height;
+    area.width = pr_width;
+    area.height = pr_height;
     sprite = sfSprite_create();
 }
 
@@ -29,36 +29,23 @@ void pr_terminate()
 }
 
 
-static void setPixel(int x, int y, int r, int b, int g, int a)
+static void setPixel(int x, int y, int r, int g, int b, int a)
 {
-    pixels[ (x + y * width) * 4] = r;
-    pixels[ (x + y * width) * 4 + 1] = g;
-    pixels[ (x + y * width) * 4 + 2] = b;
-    pixels[ (x + y * width) * 4 + 3] = a;
+    pixels[ (x + y * pr_width) * 4] = r;
+    pixels[ (x + y * pr_width) * 4 + 1] = g;
+    pixels[ (x + y * pr_width) * 4 + 2] = b;
+    pixels[ (x + y * pr_width) * 4 + 3] = a;
 }
 
 void updatePixel(int x, int y, ParticleType type)
 {
-    switch(type)
-    {
-        case EMPTY:
-            setPixel(x, y, 0, 255, 0, 255);
-            break;
-
-        case SOLID:
-            break;
-
-        case SAND:
-            break;
-
-        case WATER:
-            break;
-    }
+    sfColor color = getColor(type);
+    setPixel(x, y, color.r, color.g, color.b, color.a);
 }
 
 void pr_render(sfRenderWindow* window)
 {
-    sfImage* image = sfImage_createFromPixels(width, height, pixels);
+    sfImage* image = sfImage_createFromPixels(pr_width, pr_height, pixels);
     sfTexture* texture = sfTexture_createFromImage(image, &area);
     sfSprite_setTexture(sprite, texture, false);
 

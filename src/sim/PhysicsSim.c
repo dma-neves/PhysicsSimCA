@@ -1,6 +1,7 @@
 #include "PhysicsSim.h"
 #include "ParticleSimulator.h"
 #include "ParticleRenderer.h"
+#include "Button.h"
 
 #include <SFML/Graphics.h>
 #include <stdbool.h>
@@ -14,6 +15,12 @@ sfEvent event;
 sfClock* clock;
 bool running = true;
 
+Button* solidB;
+Button* sandB;
+Button* waterB;
+Button* emptyB;
+ParticleType tool = EMPTY;
+
 void init(int width, int height, char* title)
 {
     mode.height = height;
@@ -25,6 +32,11 @@ void init(int width, int height, char* title)
 
     pr_init(width, height);
     ps_init(width, height);
+
+    solidB = createButton(10, 10, 20, 20, getColor(SOLID));
+    sandB = createButton(10, 40, 20, 20, getColor(SAND));
+    waterB = createButton(10, 70, 20, 20, getColor(WATER));
+    emptyB = createButton(10, 100, 20, 20, getColor(EMPTY));
 }
 
 static void handleEvents()
@@ -36,6 +48,17 @@ static void handleEvents()
             running = false;
             sfRenderWindow_close(window);
         }
+    }
+
+    if(sfMouse_isButtonPressed(sfMouseLeft))
+    {
+        sfVector2i pos = sfMouse_getPositionRenderWindow(window);
+
+        if(over(solidB, pos.x, pos.y)) tool = SOLID;
+        else if(over(sandB, pos.x, pos.y)) tool = SAND;
+        else if(over(waterB, pos.x, pos.y)) tool = WATER;
+        else if(over(emptyB, pos.x, pos.y)) tool = EMPTY;
+        else if(getParticle(pos.x, pos.y)->type != tool) setParticleType(pos.x, pos.y, tool);
     }
 }
 
@@ -49,6 +72,10 @@ static void render()
     sfRenderWindow_clear(window, sfBlack);
 
     pr_render(window);
+    b_render(solidB, window);
+    b_render(sandB, window);
+    b_render(waterB, window);
+    b_render(emptyB, window);
 
     sfRenderWindow_display(window);
 }
@@ -60,6 +87,11 @@ static void terminate()
 
     ps_terminate();
     pr_terminate();
+
+    destroyButton(solidB);
+    destroyButton(sandB);
+    destroyButton(waterB);
+    destroyButton(emptyB);
 }
 
 void run()

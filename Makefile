@@ -3,7 +3,7 @@ LIBS=-lcsfml-graphics -lcsfml-window -lcsfml-system
 
 CC=gcc -std=c11 -g
 
-OBJECT_FILES=obj/main.o obj/PhysicsSim.o obj/ParticleSimulator.o obj/ParticleRenderer.o obj/list.o
+OBJECT_FILES=obj/main.o obj/PhysicsSim.o obj/ParticleSimulator.o obj/ParticleRenderer.o obj/list.o obj/Particle.o obj/Button.o
 
 sim.out: $(OBJECT_FILES)
 	$(CC) $(OBJECT_FILES) -o sim.out $(LIBS)
@@ -22,6 +22,12 @@ obj/ParticleRenderer.o: src/sim/ParticleRenderer.h src/sim/ParticleRenderer.c
 
 obj/list.o: src/util/list.h src/util/list.c
 	$(CC) -c src/util/list.c $(INC_DIRECOTRY) -o obj/list.o
+
+obj/Particle.o: src/sim/Particle.h src/sim/Particle.c
+	$(CC) -c src/sim/Particle.c $(INC_DIRECOTRY) -o obj/Particle.o
+
+obj/Button.o: src/util/Button.h src/util/Button.c
+	$(CC) -c src/util/Button.c $(INC_DIRECOTRY) -o obj/Button.o
 
 clean:
 	rm obj/*.o sim.out

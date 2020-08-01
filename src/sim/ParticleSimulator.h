@@ -10,5 +10,6 @@ void ps_update(float dt);
 
 Particle* getParticles();
 Particle* getParticle(int x, int y);
+void setParticleType(int x, int y, ParticleType type);
 
 #endif

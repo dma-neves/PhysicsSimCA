@@ -3,9 +3,9 @@
 
 Particle* particles;
 List activeParticles;
-int width_test, height_test;
+int ps_width, ps_height;
 
-static void setParticleType(int x, int y, ParticleType type)
+void setParticleType(int x, int y, ParticleType type)
 {
     getParticle(x,y)->type = type;
     updatePixel(x, y, type);
@@ -13,13 +13,13 @@ static void setParticleType(int x, int y, ParticleType type)
 
 void ps_init(int w_width, int w_height)
 {
-    width_test = w_width;
-    height_test = w_height;
-    particles = malloc(sizeof(Particle) * width_test * height_test);
+    ps_width = w_width;
+    ps_height = w_height;
+    particles = malloc(sizeof(Particle) * ps_width * ps_height);
 
-    for(int y = 0; y < height_test; y++)
+    for(int y = 0; y < ps_height; y++)
     {
-        for(int x = 0; x < width_test; x++)
+        for(int x = 0; x < ps_width; x++)
             setParticleType(x,y,EMPTY);
     }
 
@@ -66,9 +66,5 @@ Particle* getParticles()
 
 Particle* getParticle(int x, int y)
 {
-    // long int ad0 = particles + ( (x + y*width_test) * sizeof(Particle) );
-    // long int ad1 = &particles[y*width_test + x];
-    // printf("ad0: %ld ad1: %ld\n", ad0, ad1);
-    // printf("sizeof(Particle): %d\n", sizeof(Particle));
-    return &particles[y*width_test + x];
+    return &particles[y*ps_width + x];
 }
