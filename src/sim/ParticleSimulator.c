@@ -56,7 +56,13 @@ Particle* getParticles()
     return particles;
 }
 
+#include <stdio.h>
+
 Particle* getParticle(int x, int y)
 {
+    // long int ad0 = particles + ( (x + y*width_test) * sizeof(Particle) );
+    // long int ad1 = &particles[y*width_test + x];
+    // printf("ad0: %ld ad1: %ld\n", ad0, ad1);
+    // printf("sizeof(Particle): %d\n", sizeof(Particle));
     return &particles[y*width_test + x];
 }
