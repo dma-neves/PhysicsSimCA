@@ -23,7 +23,7 @@ void init(int width, int height, char* title)
     window = sfRenderWindow_create(mode, title, sfResize | sfClose, NULL);
     clock = sfClock_create();
 
-    ps_init();
+    ps_init(width, height);
     pr_init(width, height);
 }
 

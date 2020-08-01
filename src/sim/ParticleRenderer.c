@@ -6,9 +6,8 @@
 sfUint8* pixels;
 int width, height;
 
-sfImage* image;
 sfSprite* sprite;
-sfTexture* texture;
+sfIntRect area;
 
 void pr_init(int w_width, int w_height)
 {
@@ -17,27 +16,11 @@ void pr_init(int w_width, int w_height)
 
     pixels = malloc(width*height*4);
 
-    for(int x = 0; x < width; x++)
-    {
-        for(int y = 0; y < height; y++)
-        {
-            pixels[ (x + y * width) * 4]     = 255; // R?
-            pixels[ (x + y * width) * 4 + 1] = 0; // G?
-            pixels[ (x + y * width) * 4 + 2] = 0; // B?
-            pixels[ (x + y * width) * 4 + 3] = 255; // A?
-        }
-    }
-
-    image = sfImage_createFromPixels(width, height, pixels);
-
-    sfIntRect area;
     area.left = 0;
     area.top = 0;
     area.width = width;
     area.height = height;
-    sfTexture* texture = sfTexture_createFromImage(image, &area);
     sprite = sfSprite_create();
-    sfSprite_setTexture(sprite, texture, false);
 }
 
 void pr_terminate()
@@ -45,7 +28,48 @@ void pr_terminate()
     free(pixels);
 }
 
+static void setPixel(int x, int y, int r, int b, int g, int a)
+{
+    pixels[ (x + y * width) * 4] = r;
+    pixels[ (x + y * width) * 4 + 1] = g;
+    pixels[ (x + y * width) * 4 + 2] = b;
+    pixels[ (x + y * width) * 4 + 3] = a;
+}
+
+static void updatePixels()
+{
+    for(int y = 0; y < height; y++)
+    {
+        for(int x = 0; x < width; x++)
+        {
+            switch(getParticle(x, y)->type)
+            {
+                case EMPTY:
+                    setPixel(x, y, 0, 255, 0, 255);
+                    break;
+
+                case SOLID:
+                    break;
+
+                case SAND:
+                    break;
+
+                case WATER:
+                    break;
+            }
+        }
+    }
+}
+
 void pr_render(sfRenderWindow* window)
 {
+    updatePixels();
+    sfImage* image = sfImage_createFromPixels(width, height, pixels);
+    sfTexture* texture = sfTexture_createFromImage(image, &area);
+    sfSprite_setTexture(sprite, texture, false);
+
     sfRenderWindow_drawSprite(window, sprite, NULL);
+
+    sfImage_destroy(image);
+    sfTexture_destroy(texture);
 }
