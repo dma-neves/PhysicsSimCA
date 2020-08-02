@@ -14,6 +14,7 @@ sfVideoMode mode;
 sfEvent event;
 sfClock* clock;
 bool running = true;
+float scale;
 
 Button* solidB;
 Button* sandB;
@@ -21,16 +22,17 @@ Button* waterB;
 Button* emptyB;
 ParticleType tool = EMPTY;
 
-void init(int width, int height, char* title)
+void init(int width, int height, float r_scale, char* title)
 {
-    mode.height = height;
-    mode.width = width;
+    scale = r_scale;
+    mode.height = height*scale;
+    mode.width = width*scale;
     mode.bitsPerPixel = 32;
 
     window = sfRenderWindow_create(mode, title, sfResize | sfClose, NULL);
     clock = sfClock_create();
 
-    pr_init(width, height);
+    pr_init(width, height, scale);
     ps_init(width, height);
 
     solidB = createButton(10, 10, 20, 20, getColor(SOLID));
@@ -58,8 +60,8 @@ static void handleEvents()
         else if(over(sandB, pos.x, pos.y)) tool = SAND;
         else if(over(waterB, pos.x, pos.y)) tool = WATER;
         else if(over(emptyB, pos.x, pos.y)) tool = EMPTY;
-        else if(tool == EMPTY) removeParticle(pos.x, pos.y);
-        else if(*getParticleType(pos.x, pos.y) == EMPTY) addParticle(pos.x, pos.y, tool);
+        else if(tool == EMPTY) removeParticle(pos.x/scale, pos.y/scale);
+        else if(*getParticleType(pos.x/scale, pos.y/scale) == EMPTY) addParticle(pos.x/scale, pos.y/scale, tool);
     }
 }
 

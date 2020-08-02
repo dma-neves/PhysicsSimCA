@@ -47,6 +47,38 @@ static void updateSand(Particle* p, float dt)
             p->y = init_y;
         else if(*getParticleType(p->x, p->y) == SAND)
         {
+            if(*getParticleType(p->x+1, p->y) == EMPTY || *getParticleType(p->x+1, p->y) == WATER)
+                p->x++;
+            else if(*getParticleType(p->x-1, p->y) == EMPTY || *getParticleType(p->x-1, p->y) == WATER)
+                p->x--;
+            else
+                p->y = init_y;
+        }
+
+        if(*getParticleType(p->x, p->y) == WATER)
+        {
+            removeParticle(p->x, p->y);
+        }
+
+        setParticleType(init_x, init_y, EMPTY);
+        setParticleType(p->x, p->y, p->type);
+    }
+}
+#include <stdio.h>
+static void updateWater(Particle* p, float dt)
+{
+    float init_x = p->x;
+    float init_y = p->y;
+    p->y += dt;
+
+    if(dt > 1) printf("WHAT\n");
+
+    if((int)p->y != (int)init_y)
+    {
+        if(*getParticleType(p->x, p->y) == SOLID || *getParticleType(p->x, p->y) == SAND)
+            p->y = init_y;
+        else if(*getParticleType(p->x, p->y) == WATER)
+        {
             if(*getParticleType(p->x+1, p->y) == EMPTY)
                 p->x++;
             else if(*getParticleType(p->x-1, p->y) == EMPTY)
@@ -55,13 +87,20 @@ static void updateSand(Particle* p, float dt)
                 p->y = init_y;
         }
 
+        if(p->y == init_y)
+        {
+            int direction = rand() % 2;
+            if(direction == 0) direction = -1;
+
+            if(*getParticleType(p->x+direction, p->y) == EMPTY)
+                p->x += direction;
+            else if(*getParticleType(p->x-direction, p->y) == EMPTY)
+                    p->x -= direction;
+        }
+
         setParticleType(init_x, init_y, EMPTY);
         setParticleType(p->x, p->y, p->type);
     }
-}
-
-static void updateWater(Particle* p, float dt)
-{
 }
 
 static void updateParticle(Particle* p, float dt)

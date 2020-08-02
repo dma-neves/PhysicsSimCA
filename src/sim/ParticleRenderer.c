@@ -9,7 +9,7 @@ int pr_width, pr_height;
 sfSprite* sprite;
 sfIntRect area;
 
-void pr_init(int w_width, int w_height)
+void pr_init(int w_width, int w_height, float scale)
 {
     pr_width = w_width;
     pr_height = w_height;
@@ -21,6 +21,11 @@ void pr_init(int w_width, int w_height)
     area.width = pr_width;
     area.height = pr_height;
     sprite = sfSprite_create();
+
+    sfVector2f scale_v;
+    scale_v.x = scale;
+    scale_v.y = scale;
+    sfSprite_setScale(sprite, scale_v);
 }
 
 void pr_terminate()

@@ -2,6 +2,6 @@
 
 int main()
 {
-    init(800, 800, "Cellular Automata Physics Simulator");
+    init(200, 200, 4, "Cellular Automata Physics Simulator");
     run();
 }

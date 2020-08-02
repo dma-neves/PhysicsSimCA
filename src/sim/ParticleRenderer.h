@@ -5,7 +5,7 @@
 
 #include "Particle.h"
 
-void pr_init(int w_width, int w_height);
+void pr_init(int w_width, int w_height, float scale);
 void pr_terminate();
 void pr_render(sfRenderWindow* window);
 
