@@ -32,6 +32,7 @@ void ps_init(int w_width, int w_height)
 void ps_terminate()
 {
     free(particles);
+    clearList(&activeParticles);
 }
 
 static void updateSand(Particle* p, float dt)
@@ -47,17 +48,11 @@ static void updateSand(Particle* p, float dt)
         else if(*getParticleType(p->x, p->y) == SAND)
         {
             if(*getParticleType(p->x+1, p->y) == EMPTY)
-            {
                 p->x++;
-            }
             else if(*getParticleType(p->x-1, p->y) == EMPTY)
-            {
                 p->x--;
-            }
             else
-            {
                 p->y = init_y;
-            } 
         }
 
         setParticleType(init_x, init_y, EMPTY);
@@ -73,8 +68,8 @@ static void updateParticle(Particle* p, float dt)
 {
     switch(p->type)
     {
-        case SAND: updateSand(p, dt);
-        case WATER: updateWater(p, dt);
+        case SAND: updateSand(p, dt); break;
+        case WATER: updateWater(p, dt); break;
     }
 }
 
@@ -117,6 +112,7 @@ void removeParticle(int x, int y)
             if(p->x == x && p->y == y)
             {
                 free( rem(&activeParticles, ap) );
+                break;
             }
         }
     }
