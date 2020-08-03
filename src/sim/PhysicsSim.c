@@ -5,7 +5,6 @@
 
 #include <SFML/Graphics.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 #define DT_MULTIPLIER 100
 
@@ -104,7 +103,6 @@ void run()
         handleEvents();
 
         float dt = sfTime_asSeconds( sfClock_restart(clock) ) * DT_MULTIPLIER;
-        if(dt > 1) printf("big dt\n");
 
         for(int i = 0; i <= dt; i++)
         {

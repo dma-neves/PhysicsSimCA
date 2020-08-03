@@ -59,19 +59,18 @@ static void updateSand(Particle* p, float dt)
         {
             removeParticle(p->x, p->y);
         }
-
-        setParticleType(init_x, init_y, EMPTY);
-        setParticleType(p->x, p->y, p->type);
     }
+
+    setParticleType(init_x, init_y, EMPTY);
+    setParticleType(p->x, p->y, SAND);
 }
+
 #include <stdio.h>
 static void updateWater(Particle* p, float dt)
 {
     float init_x = p->x;
     float init_y = p->y;
     p->y += dt;
-
-    if(dt > 1) printf("WHAT\n");
 
     if((int)p->y != (int)init_y)
     {
@@ -97,10 +96,10 @@ static void updateWater(Particle* p, float dt)
             else if(*getParticleType(p->x-direction, p->y) == EMPTY)
                     p->x -= direction;
         }
-
-        setParticleType(init_x, init_y, EMPTY);
-        setParticleType(p->x, p->y, p->type);
     }
+
+    setParticleType(init_x, init_y, EMPTY);
+    setParticleType(p->x, p->y, WATER);
 }
 
 static void updateParticle(Particle* p, float dt)
