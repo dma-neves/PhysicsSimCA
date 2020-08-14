@@ -1,32 +1,42 @@
 #include "ParticleSimulator.h"
 #include "list.h"
 
-ParticleType* particles;
+Particle* particles;
 List activeParticles;
 int ps_width, ps_height;
 
-void setParticleType(int x, int y, ParticleType type)
+Particle* getParticle(int x, int y) { return &particles[y*ps_width + x]; }
+
+ParticleType* getParticleType(int x, int y) { return &getParticle(x,y)->type; }
+
+void updateParticleTypeAt(int x, int y, ParticleType type)
 {
-    *getParticleType(x,y) = type;
+    getParticle(x, y)->type = type;
     updatePixel(x, y, type);
+}
+
+void updateParticleAt(int x, int y, Particle particle)
+{
+    *getParticle(x, y) = particle;
+    updatePixel(x, y, particle.type);
 }
 
 void ps_init(int w_width, int w_height)
 {
     ps_width = w_width;
     ps_height = w_height;
-    particles = malloc(sizeof(ParticleType) * ps_width * ps_height);
+    particles = malloc(sizeof(Particle) * ps_width * ps_height);
 
     for(int y = 0; y < ps_height; y++)
     {
         for(int x = 0; x < ps_width; x++)
         {
-            if(y == 0 || y == ps_height-1 || x == 0 || x == ps_width-1) setParticleType(x, y, SOLID);
-            else setParticleType(x, y, EMPTY);
+            if(y == 0 || y == ps_height-1 || x == 0 || x == ps_width-1) updateParticleTypeAt(x, y, SOLID);
+            else updateParticleTypeAt(x, y, EMPTY);
         }
     }
 
-    initList(&activeParticles, sizeof(Particle));
+    initList(&activeParticles, sizeof(ActiveParticle));
 }
 
 void ps_terminate()
@@ -35,7 +45,7 @@ void ps_terminate()
     clearList(&activeParticles);
 }
 
-static void updateSand(Particle* p, float dt)
+static void updateSand(ActiveParticle* p, float dt)
 {
     float init_x = p->x;
     float init_y = p->y;
@@ -61,12 +71,11 @@ static void updateSand(Particle* p, float dt)
         }
     }
 
-    setParticleType(init_x, init_y, EMPTY);
-    setParticleType(p->x, p->y, SAND);
+    updateParticleTypeAt(init_x, init_y, EMPTY);
+    updateParticleTypeAt(p->x, p->y, SAND);
 }
 
-#include <stdio.h>
-static void updateWater(Particle* p, float dt)
+static void updateWater(ActiveParticle* p, float dt)
 {
     float init_x = p->x;
     float init_y = p->y;
@@ -98,11 +107,11 @@ static void updateWater(Particle* p, float dt)
         }
     }
 
-    setParticleType(init_x, init_y, EMPTY);
-    setParticleType(p->x, p->y, WATER);
+    updateParticleTypeAt(init_x, init_y, EMPTY);
+    updateParticleTypeAt(p->x, p->y, WATER);
 }
 
-static void updateParticle(Particle* p, float dt)
+static void updateParticle(ActiveParticle* p, float dt)
 {
     switch(p->type)
     {
@@ -116,23 +125,18 @@ void ps_update(float dt)
     Node* ap = activeParticles.head;
     for(; ap != NULL; ap = ap->next)
     {
-        updateParticle((Particle*)ap->element, dt);
+        updateParticle((ActiveParticle*)ap->element, dt);
     }
 }
 
-ParticleType* getParticleType(int x, int y)
+void addParticle(int x, int y, Particle particle)
 {
-    return &particles[y*ps_width + x];
-}
-
-void addParticle(int x, int y, ParticleType type)
-{
-    setParticleType(x, y, type);
+    updateParticleAt(x, y, particle);
     
-    if(type != SOLID && type != EMPTY)
+    if(particle.type != SOLID && particle.type != EMPTY)
     {
-        Particle* p = malloc(sizeof(Particle));
-        p->type = type;
+        ActiveParticle* p = malloc(sizeof(ActiveParticle));
+        p->type = particle.type;
         p->x = x;
         p->y = y;
         add(&activeParticles, p);
@@ -146,7 +150,7 @@ void removeParticle(int x, int y)
         Node* ap = activeParticles.head;
         for(; ap != NULL; ap = ap->next)
         {
-            Particle* p = ap->element;
+            ActiveParticle* p = ap->element;
             if(p->x == x && p->y == y)
             {
                 free( rem(&activeParticles, ap) );
@@ -155,5 +159,5 @@ void removeParticle(int x, int y)
         }
     }
 
-    setParticleType(x, y, EMPTY);
+    updateParticleTypeAt(x, y, EMPTY);
 }

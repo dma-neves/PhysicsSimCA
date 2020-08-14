@@ -16,7 +16,7 @@ Button* createButton(int x, int y, int width, int height, sfColor color)
     sfRectangleShape_setPosition(button->rect, pos);
     sfRectangleShape_setSize(button->rect, size);
     sfRectangleShape_setFillColor(button->rect, color);
-    sfRectangleShape_setOutlineThickness(button->rect, 1);
+    sfRectangleShape_setOutlineThickness(button->rect, 2);
     color.r = 255, color.g = 255; color.b = 255; color.a = 255;
     sfRectangleShape_setOutlineColor(button->rect, color);
 

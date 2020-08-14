@@ -5,10 +5,15 @@
 
 typedef enum _ParticleType { EMPTY = 0, SOLID, SAND, WATER } ParticleType;
 
-typedef struct _Particle
+typedef struct _ActiveParticle
 {
     ParticleType type;
     float x, y;
+} ActiveParticle;
+
+typedef struct _Particle
+{
+    ParticleType type;
 } Particle;
 
 sfColor getColor(ParticleType type);

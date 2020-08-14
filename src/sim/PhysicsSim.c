@@ -60,7 +60,7 @@ static void handleEvents()
         else if(over(waterB, pos.x, pos.y)) tool = WATER;
         else if(over(emptyB, pos.x, pos.y)) tool = EMPTY;
         else if(tool == EMPTY) removeParticle(pos.x/scale, pos.y/scale);
-        else if(*getParticleType(pos.x/scale, pos.y/scale) == EMPTY) addParticle(pos.x/scale, pos.y/scale, tool);
+        else if(*getParticleType(pos.x/scale, pos.y/scale) == EMPTY) addParticle(pos.x/scale, pos.y/scale, (Particle){.type = tool});
     }
 }
 

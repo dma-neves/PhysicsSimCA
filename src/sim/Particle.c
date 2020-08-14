@@ -11,7 +11,7 @@ sfColor getColor(ParticleType type)
             break;
 
         case SOLID:
-            color.r = 63; color.g = 63; color.b = 63;
+            color.r = 100; color.g = 100; color.b = 100;
             break;
 
         case SAND:

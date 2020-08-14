@@ -9,8 +9,9 @@ void ps_terminate();
 void ps_update(float dt);
 
 ParticleType* getParticleType(int x, int y);
+Particle* getParticle(int x, int y);
 
-void addParticle(int x, int y, ParticleType type);
+void addParticle(int x, int y, Particle particle);
 void removeParticle(int x, int y);
 
 #endif
