@@ -38,7 +38,6 @@ void addParticle(int x, int y, Particle particle)
         p->y = y;
         p->vx = 0;
         p->vy = 0;
-        //if(particle.type == WATER) p->vy = 2;
         add(&activeParticles, p);
     }
 }
