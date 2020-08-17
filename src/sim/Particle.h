@@ -9,6 +9,7 @@ typedef struct _ActiveParticle
 {
     ParticleType type;
     float x, y;
+    float vx, vy;
 } ActiveParticle;
 
 typedef struct _Particle
