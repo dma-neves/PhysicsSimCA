@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-Button* createButton(int x, int y, int width, int height, sfColor color)
+Button* button_init(int x, int y, int width, int height, sfColor color)
 {
     Button* button = malloc(sizeof(Button));
     button->x = x; button->y = y;
@@ -23,17 +23,17 @@ Button* createButton(int x, int y, int width, int height, sfColor color)
     return button;
 }
 
-void destroyButton(Button* button)
+void button_destroy(Button* button)
 {
     free(button);
 }
 
-void b_render(Button* button, sfRenderWindow* window)
+void button_render(Button* button, sfRenderWindow* window)
 {
     sfRenderWindow_drawRectangleShape(window, button->rect, NULL);
 }
 
-bool over(Button* button, int x, int y)
+bool button_over(Button* button, int x, int y)
 {
     if(x > button->x + button->width || x  < button->x) return false;
     if(y > button->y + button->height || y < button->y) return false;

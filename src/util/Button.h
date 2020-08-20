@@ -13,9 +13,9 @@ typedef struct _Button
     sfRectangleShape* rect;
 } Button;
 
-Button* createButton(int x, int y, int width, int height, sfColor color);
-void destroyButton(Button* button);
-void b_render(Button* button, sfRenderWindow* window);
-bool over(Button* button, int x, int y);
+Button* button_init(int x, int y, int width, int height, sfColor color);
+void button_destroy(Button* button);
+void button_render(Button* button, sfRenderWindow* window);
+bool button_over(Button* button, int x, int y);
 
 #endif

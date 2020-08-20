@@ -34,10 +34,24 @@ void init(int width, int height, float r_scale, char* title)
     pr_init(width, height, scale);
     ps_init(width, height);
 
-    solidB = createButton(10, 10, 20, 20, getColor(SOLID));
-    sandB = createButton(10, 40, 20, 20, getColor(SAND));
-    waterB = createButton(10, 70, 20, 20, getColor(WATER));
-    emptyB = createButton(10, 100, 20, 20, getColor(EMPTY));
+    solidB = button_init(10, 10, 20, 20, getColor(SOLID));
+    sandB = button_init(10, 40, 20, 20, getColor(SAND));
+    waterB = button_init(10, 70, 20, 20, getColor(WATER));
+    emptyB = button_init(10, 100, 20, 20, getColor(EMPTY));
+}
+
+void destroy()
+{
+    sfRenderWindow_destroy(window);
+    sfClock_destroy(clock);
+
+    ps_destroy();
+    pr_destroy();
+
+    button_destroy(solidB);
+    button_destroy(sandB);
+    button_destroy(waterB);
+    button_destroy(emptyB);
 }
 
 static void handleEvents()
@@ -55,10 +69,10 @@ static void handleEvents()
     {
         sfVector2i pos = sfMouse_getPositionRenderWindow(window);
 
-        if(over(solidB, pos.x, pos.y)) tool = SOLID;
-        else if(over(sandB, pos.x, pos.y)) tool = SAND;
-        else if(over(waterB, pos.x, pos.y)) tool = WATER;
-        else if(over(emptyB, pos.x, pos.y)) tool = EMPTY;
+        if(button_over(solidB, pos.x, pos.y)) tool = SOLID;
+        else if(button_over(sandB, pos.x, pos.y)) tool = SAND;
+        else if(button_over(waterB, pos.x, pos.y)) tool = WATER;
+        else if(button_over(emptyB, pos.x, pos.y)) tool = EMPTY;
         else if(tool == EMPTY) removeParticle(pos.x/scale, pos.y/scale);
         else if(*getParticleType(pos.x/scale, pos.y/scale) == EMPTY) addParticle(pos.x/scale, pos.y/scale, (Particle){.type = tool});
     }
@@ -74,26 +88,12 @@ static void render()
     sfRenderWindow_clear(window, sfBlack);
 
     pr_render(window);
-    b_render(solidB, window);
-    b_render(sandB, window);
-    b_render(waterB, window);
-    b_render(emptyB, window);
+    button_render(solidB, window);
+    button_render(sandB, window);
+    button_render(waterB, window);
+    button_render(emptyB, window);
 
     sfRenderWindow_display(window);
-}
-
-static void terminate()
-{
-    sfRenderWindow_destroy(window);
-    sfClock_destroy(clock);
-
-    ps_terminate();
-    pr_terminate();
-
-    destroyButton(solidB);
-    destroyButton(sandB);
-    destroyButton(waterB);
-    destroyButton(emptyB);
 }
 
 void run()
@@ -113,5 +113,5 @@ void run()
         render();
     }
 
-    terminate();
+    destroy();
 }

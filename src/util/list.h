@@ -19,10 +19,10 @@ typedef struct _List
     size_t elemSize;
 } List;
 
-void initList(List* list, size_t elemSize);
-Node* find(List* list, void* element);
-void add(List* list, void* element);
-void* rem(List* list, Node* node);
-void clearList(List* list);
+void list_init(List* list, size_t elemSize);
+Node* list_find(List* list, void* element);
+void list_add(List* list, void* element);
+void* list_rem(List* list, Node* node);
+void list_clear(List* list);
 
 #endif

@@ -6,14 +6,14 @@
 
 #include "list.h"
 
-void initList(List* list, size_t elemSize)
+void list_init(List* list, size_t elemSize)
 {
     list->head = NULL;
     list->tail = NULL;
     list->elemSize = elemSize;
 }
 
-void add(List* list, void* element)
+void list_add(List* list, void* element)
 {
     if(list->head == NULL)
     {
@@ -35,7 +35,7 @@ void add(List* list, void* element)
     
 }
 
-Node* find(List* list, void* element)
+Node* list_find(List* list, void* element)
 {
     Node* curNode = list->head;
     while(curNode != NULL && curNode->element != element) curNode = curNode->next;
@@ -45,7 +45,7 @@ Node* find(List* list, void* element)
     return curNode;
 }
 
-void* rem(List* list, Node* node)
+void* list_rem(List* list, Node* node)
 {  
     if(node == list->head)
     {
@@ -68,7 +68,7 @@ void* rem(List* list, Node* node)
     return elem;
 }
 
-void clearList(List* list)
+void list_clear(List* list)
 {
     Node* curNode = list->head;
     while(curNode != NULL)

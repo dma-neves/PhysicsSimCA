@@ -5,7 +5,7 @@
 #include "ParticleRenderer.h"
 
 void ps_init(int w_width, int w_height);
-void ps_terminate();
+void ps_destroy();
 void ps_update(float dt);
 
 ParticleType* getParticleType(int x, int y);

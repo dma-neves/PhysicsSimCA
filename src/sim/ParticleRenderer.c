@@ -28,7 +28,7 @@ void pr_init(int w_width, int w_height, float scale)
     sfSprite_setScale(sprite, scale_v);
 }
 
-void pr_terminate()
+void pr_destroy()
 {
     free(pixels);
 }

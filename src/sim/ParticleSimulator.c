@@ -38,7 +38,7 @@ void addParticle(int x, int y, Particle particle)
         p->y = y;
         p->vx = 0;
         p->vy = 0;
-        add(&activeParticles, p);
+        list_add(&activeParticles, p);
     }
 }
 
@@ -52,7 +52,7 @@ void removeParticle(int x, int y)
             ActiveParticle* p = ap->element;
             if(p->x == x && p->y == y)
             {
-                free( rem(&activeParticles, ap) );
+                free( list_rem(&activeParticles, ap) );
                 break;
             }
         }
@@ -76,13 +76,13 @@ void ps_init(int w_width, int w_height)
         }
     }
 
-    initList(&activeParticles, sizeof(ActiveParticle));
+    list_init(&activeParticles, sizeof(ActiveParticle));
 }
 
-void ps_terminate()
+void ps_destroy()
 {
     free(particles);
-    clearList(&activeParticles);
+    list_clear(&activeParticles);
 }
 
 static void updateSand(ActiveParticle* p, float dt)
