@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-Button* button_init(int x, int y, int width, int height, sfColor color)
+Button* button_create(int x, int y, int width, int height, sfColor color)
 {
     Button* button = malloc(sizeof(Button));
     button->x = x; button->y = y;

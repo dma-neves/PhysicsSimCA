@@ -19,6 +19,9 @@ Button* solidB;
 Button* sandB;
 Button* waterB;
 Button* emptyB;
+
+#define NUM_BUTTONS 4
+Button* buttons[NUM_BUTTONS];
 ParticleType tool = EMPTY;
 
 void init(int width, int height, float r_scale, char* title)
@@ -34,10 +37,8 @@ void init(int width, int height, float r_scale, char* title)
     pr_init(width, height, scale);
     ps_init(width, height);
 
-    solidB = button_init(10, 10, 20, 20, getColor(SOLID));
-    sandB = button_init(10, 40, 20, 20, getColor(SAND));
-    waterB = button_init(10, 70, 20, 20, getColor(WATER));
-    emptyB = button_init(10, 100, 20, 20, getColor(EMPTY));
+    for(int i = 0; i < NUM_BUTTONS; i++)
+        buttons[i] = button_create(10, 10+30*i, 20, 20, getColor(i));
 }
 
 void destroy()
@@ -48,10 +49,8 @@ void destroy()
     ps_destroy();
     pr_destroy();
 
-    button_destroy(solidB);
-    button_destroy(sandB);
-    button_destroy(waterB);
-    button_destroy(emptyB);
+    for(int i = 0; i < NUM_BUTTONS; i++)
+        button_destroy(buttons[i]);
 }
 
 static void handleEvents()
@@ -69,12 +68,22 @@ static void handleEvents()
     {
         sfVector2i pos = sfMouse_getPositionRenderWindow(window);
 
-        if(button_over(solidB, pos.x, pos.y)) tool = SOLID;
-        else if(button_over(sandB, pos.x, pos.y)) tool = SAND;
-        else if(button_over(waterB, pos.x, pos.y)) tool = WATER;
-        else if(button_over(emptyB, pos.x, pos.y)) tool = EMPTY;
-        else if(tool == EMPTY) removeParticle(pos.x/scale, pos.y/scale);
-        else if(*getParticleType(pos.x/scale, pos.y/scale) == EMPTY) addParticle(pos.x/scale, pos.y/scale, (Particle){.type = tool});
+        bool toolSelected = false;
+        for(int i = 0; i < NUM_BUTTONS && !toolSelected; i++)
+        {
+            if(button_over(buttons[i], pos.x, pos.y))
+            {
+                tool = i;
+                toolSelected = true;
+            }
+        }
+
+        if(!toolSelected)
+        {
+            if(tool == EMPTY)
+                removeParticle(pos.x/scale, pos.y/scale);
+            else if(*getParticleType(pos.x/scale, pos.y/scale) == EMPTY) addParticle(pos.x/scale, pos.y/scale, (Particle){.type = tool});
+        }
     }
 }
 
@@ -88,10 +97,9 @@ static void render()
     sfRenderWindow_clear(window, sfBlack);
 
     pr_render(window);
-    button_render(solidB, window);
-    button_render(sandB, window);
-    button_render(waterB, window);
-    button_render(emptyB, window);
+
+    for(int i = 0; i < NUM_BUTTONS; i++)
+        button_render(buttons[i], window);
 
     sfRenderWindow_display(window);
 }

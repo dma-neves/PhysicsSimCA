@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.h>
 
-typedef enum _ParticleType { EMPTY = 0, SOLID, SAND, WATER } ParticleType;
+typedef enum _ParticleType { EMPTY = 0, SOLID = 1, SAND = 2, WATER = 3 } ParticleType;
 
 typedef struct _ActiveParticle
 {
