@@ -15,11 +15,6 @@ sfClock* clock;
 bool running = true;
 float scale;
 
-Button* solidB;
-Button* sandB;
-Button* waterB;
-Button* emptyB;
-
 #define NUM_BUTTONS 4
 Button* buttons[NUM_BUTTONS];
 ParticleType tool = EMPTY;
